@@ -1,0 +1,119 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>MeshCore Topology Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet & Heatmap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.flex{display:flex}.h-48{height:12rem}.h-96{height:24rem}.w-16{width:4rem}.w-24{width:6rem}.max-w-4xl{max-width:56rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.rounded{border-radius:0.25rem}.rounded-lg{border-radius:0.5rem}.border{border-width:1px}.border-gray-700{--tw-border-opacity:1;border-color:rgb(55 65 81 / var(--tw-border-opacity, 1))}.bg-black{--tw-bg-opacity:1;background-color:rgb(0 0 0 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-gray-700{--tw-bg-opacity:1;background-color:rgb(55 65 81 / var(--tw-bg-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.italic{font-style:italic}.text-gray-100{--tw-text-opacity:1;color:rgb(243 244 246 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-blue-500:hover{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}</style></head>
+<body class="bg-gray-900 text-gray-100 p-6">
+
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-4">Topology Monitor</h1>
+        
+        <div class="flex gap-4 mb-6 bg-gray-800 p-4 rounded-lg">
+            <button id="toggleBtn" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500 font-bold transition-colors">
+                Connect BLE
+            </button>
+            <input id="maxHops" type="number" value="4" class="bg-gray-700 w-16 px-2 py-1 rounded text-center">
+            <input id="hashFilter" type="text" placeholder="0xF1" class="bg-gray-700 w-24 px-2 py-1 rounded">
+        </div>
+
+        <div id="map" class="h-96 mb-6 rounded-lg border border-gray-700 shadow-lg leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: relative;"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(-118px, 0px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(0px, 0px, 0px) scale(1);"><img alt="" src="https://c.tile.openstreetmap.org/15/29578/20092.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(178px, -99px, 0px); opacity: 1;"><img alt="" src="https://a.tile.openstreetmap.org/15/29579/20092.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(434px, -99px, 0px); opacity: 1;"><img alt="" src="https://a.tile.openstreetmap.org/15/29578/20093.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(178px, 157px, 0px); opacity: 1;"><img alt="" src="https://b.tile.openstreetmap.org/15/29579/20093.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(434px, 157px, 0px); opacity: 1;"><img alt="" src="https://b.tile.openstreetmap.org/15/29577/20092.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-78px, -99px, 0px); opacity: 1;"><img alt="" src="https://b.tile.openstreetmap.org/15/29580/20092.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(690px, -99px, 0px); opacity: 1;"><img alt="" src="https://c.tile.openstreetmap.org/15/29577/20093.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-78px, 157px, 0px); opacity: 1;"><img alt="" src="https://c.tile.openstreetmap.org/15/29580/20093.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(690px, 157px, 0px); opacity: 1;"></div></div></div><div class="leaflet-pane leaflet-overlay-pane"><canvas class="leaflet-heatmap-layer leaflet-layer leaflet-zoom-animated" width="659" height="383" style="transform-origin: 50% 50%; transform: translate3d(118px, 0px, 0px);"></canvas></div><div class="leaflet-pane leaflet-shadow-pane"></div><div class="leaflet-pane leaflet-marker-pane"></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(7.57224e+06px, 5.14384e+06px, 0px) scale(16384);"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in" aria-disabled="false"><span aria-hidden="true">+</span></a><a class="leaflet-control-zoom-out" href="#" title="Zoom out" role="button" aria-label="Zoom out" aria-disabled="false"><span aria-hidden="true">−</span></a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="https://leafletjs.com" title="A JavaScript library for interactive maps"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"></path><path fill="#FFD500" d="M0 4h12v3H0z"></path><path fill="#E0BC00" d="M0 7h12v1H0z"></path></svg> Leaflet</a></div></div></div></div>
+
+        <div id="log" class="font-mono text-xs bg-black p-4 rounded h-48 overflow-y-auto border border-gray-700">
+            <div class="text-gray-500 italic">Ready.</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { WebBleConnection, Constants } from 'https://cdn.jsdelivr.net/npm/@liamcottle/meshcore.js/+esm';
+
+        const logDiv = document.getElementById('log');
+        const map = L.map('map').setView([-37.6937, 144.9652], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        
+        const heatPoints = [];
+        const heatmap = L.heatLayer(heatPoints, { radius: 25, blur: 15 }).addTo(map);
+        
+        // Data storage for export and triangulation
+        let packetCollection = []; 
+        let connection = null;
+        let currentPos = null;
+
+        function appendLog(msg, color = 'text-gray-100') {
+            const entry = document.createElement('div');
+            const logDiv = document.getElementById('log');
+            entry.className = color;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logDiv.prepend(entry);
+        }
+
+        navigator.geolocation.watchPosition(pos => {
+            currentPos = [pos.coords.latitude, pos.coords.longitude];
+        }, null, { enableHighAccuracy: true });
+
+        // Function: Save data to file
+        function downloadData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(packetCollection));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `mesh_data_${new Date().getTime()}.json`);
+            dlAnchorElem.click();
+        }
+
+        // Function: Simple Weighted Centroid Triangulation
+        function calculateCentroid() {
+            let totalWeight = 0, latSum = 0, lonSum = 0;
+            packetCollection.forEach(p => {
+                // RSSI is negative, so we invert/normalize to get weight
+                let weight = Math.pow(10, (p.rssi + 100) / 10); 
+                latSum += p.lat * weight;
+                lonSum += p.lon * weight;
+                totalWeight += weight;
+            });
+            return [latSum / totalWeight, lonSum / totalWeight];
+        }
+
+        document.getElementById('toggleBtn').addEventListener('click', async () => {
+            if (connection) {
+                downloadData();
+                const centroid = calculateCentroid();
+                L.marker(centroid, { title: "Likely Source" }).addTo(map).bindPopup("Estimated Source Location").openPopup();
+                appendLog("Data saved & Source estimated!");
+                return;
+            }
+
+            try {
+                connection = await WebBleConnection.open();
+                document.getElementById('toggleBtn').textContent = "Save & Disconnect";
+                
+                connection.on(Constants.PushCodes.LogRxData, (event) => {
+                    const data = event.raw;
+                    if (!data || data.length < 9) return;
+
+                    const hops = data[(data[0] & 0x03) === 0 ? 5 : 1] & 0x3F;
+                    const hashIdx = ((data[0] & 0x03) === 0 ? 5 : 1) + 1 + (hops * ((data[(data[0] & 0x03) === 0 ? 5 : 1] >> 6) + 1));
+                    const hash = "0X" + data[hashIdx].toString(16).toUpperCase();
+                    
+                    if (hops <= parseInt(document.getElementById('maxHops').value) && 
+                       (!document.getElementById('hashFilter').value || hash === document.getElementById('hashFilter').value.toUpperCase())) {
+                        
+                        if (currentPos) {
+                            packetCollection.push({ lat: currentPos[0], lon: currentPos[1], rssi: event.lastRssi, hash });
+                            
+                            L.circleMarker(currentPos, { color: 'cyan', radius: 4 }).addTo(map);
+                            const intensity = Math.max(0, (event.lastRssi + 100) / 70);
+                            heatPoints.push([...currentPos, intensity]);
+                            heatmap.setLatLngs(heatPoints);
+                            
+                            appendLog(`Mapped: ${hash} @ ${event.lastRssi}dBm`);
+                        }
+                    }
+                });
+            } catch (err) { appendLog("Error: " + err.message); }
+        });
+    </script>
+
+</body></html>
