@@ -330,8 +330,6 @@
                 }
                 
                 connection.on(Constants.PushCodes.LogRxData, (event) => {
-                    if (isLoggingPaused) return;
-
                     const data = event.raw;
                     if (!data || data.length < 9) return;
 
@@ -341,25 +339,26 @@
                     
                     // Lock to 0 hops (direct messages only)
                     if (hops === 0) {
-                        const selectedHash = document.getElementById('hashFilter').value.trim().toUpperCase();
-                        
                         // Always log zero-hop messages received
                         appendLog(`Rx 0-hop: ${hash} @ ${event.lastRssi}dBm`);
 
-                        if (selectedHash && hash === selectedHash) {
-                            if (currentPos) {
-                                packetCollection.push({
-                                    timestamp: new Date().toISOString(),
-                                    lat: currentPos[0],
-                                    lon: currentPos[1],
-                                    rssi: event.lastRssi,
-                                    hash,
-                                    type: 'signal'
-                                });
-                                L.circleMarker(currentPos, { color: 'cyan', radius: 4 }).addTo(map);
-                                const intensity = Math.max(0, (event.lastRssi + 100) / 70);
-                                heatPoints.push([...currentPos, intensity]);
-                                heatmap.setLatLngs(heatPoints);
+                        if (!isLoggingPaused) {
+                            const selectedHash = document.getElementById('hashFilter').value.trim().toUpperCase();
+                            if (selectedHash && hash === selectedHash) {
+                                if (currentPos) {
+                                    packetCollection.push({
+                                        timestamp: new Date().toISOString(),
+                                        lat: currentPos[0],
+                                        lon: currentPos[1],
+                                        rssi: event.lastRssi,
+                                        hash,
+                                        type: 'signal'
+                                    });
+                                    L.circleMarker(currentPos, { color: 'cyan', radius: 4 }).addTo(map);
+                                    const intensity = Math.max(0, (event.lastRssi + 100) / 70);
+                                    heatPoints.push([...currentPos, intensity]);
+                                    heatmap.setLatLngs(heatPoints);
+                                }
                             }
                         }
                     }
