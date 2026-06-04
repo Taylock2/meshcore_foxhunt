@@ -186,15 +186,23 @@
         // Pause button handler
         const pauseBtn = document.getElementById('pauseBtn');
         pauseBtn.addEventListener('click', () => {
-            isLoggingPaused = !isLoggingPaused;
             if (isLoggingPaused) {
-                pauseBtn.textContent = "Resume Logging";
-                pauseBtn.className = "bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded font-bold transition-colors animate-pulse text-sm";
-                appendLog("Logging paused.", "text-amber-400");
-            } else {
+                // Check selection before starting/resuming logging
+                const filterVal = document.getElementById('hashFilter').value.trim();
+                if (!filterVal) {
+                    alert("Please specify a Filter Hash (Channel Selection) before starting/resuming logging.");
+                    document.getElementById('hashFilter').focus();
+                    return;
+                }
+                isLoggingPaused = false;
                 pauseBtn.textContent = "Pause Logging";
                 pauseBtn.className = "bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-bold transition-colors text-sm";
                 appendLog("Logging resumed.", "text-blue-400");
+            } else {
+                isLoggingPaused = true;
+                pauseBtn.textContent = "Resume Logging";
+                pauseBtn.className = "bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded font-bold transition-colors animate-pulse text-sm";
+                appendLog("Logging paused.", "text-amber-400");
             }
         });
 
@@ -297,9 +305,21 @@
                 updateRadioStatus('connected');
                 document.getElementById('toggleBtn').textContent = "Save & Disconnect";
                 
-                // Enable Pause Button
-                pauseBtn.disabled = false;
-                pauseBtn.className = "bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-bold transition-colors text-sm";
+                // Allow connection of BLE, but pause logging if no channel selection is made initially
+                const filterVal = document.getElementById('hashFilter').value.trim();
+                if (filterVal) {
+                    isLoggingPaused = false;
+                    pauseBtn.disabled = false;
+                    pauseBtn.textContent = "Pause Logging";
+                    pauseBtn.className = "bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-bold transition-colors text-sm";
+                    appendLog("Logging started automatically.", "text-blue-400");
+                } else {
+                    isLoggingPaused = true;
+                    pauseBtn.disabled = false;
+                    pauseBtn.textContent = "Resume Logging";
+                    pauseBtn.className = "bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded font-bold transition-colors animate-pulse text-sm";
+                    appendLog("Connected. Enter a Filter Hash and click Resume Logging to start mapping.", "text-amber-400");
+                }
                 
                 // Monitor disconnect if device provides it
                 if (connection.device && typeof connection.device.addEventListener === 'function') {
@@ -320,23 +340,27 @@
                     const hash = "0X" + data[hashIdx].toString(16).toUpperCase();
                     
                     // Lock to 0 hops (direct messages only)
-                    if (hops === 0 && 
-                       (!document.getElementById('hashFilter').value || hash === document.getElementById('hashFilter').value.toUpperCase())) {
+                    if (hops === 0) {
+                        const selectedHash = document.getElementById('hashFilter').value.trim().toUpperCase();
                         
-                        if (currentPos) {
-                            packetCollection.push({
-                                timestamp: new Date().toISOString(),
-                                lat: currentPos[0],
-                                lon: currentPos[1],
-                                rssi: event.lastRssi,
-                                hash,
-                                type: 'signal'
-                            });
-                            L.circleMarker(currentPos, { color: 'cyan', radius: 4 }).addTo(map);
-                            const intensity = Math.max(0, (event.lastRssi + 100) / 70);
-                            heatPoints.push([...currentPos, intensity]);
-                            heatmap.setLatLngs(heatPoints);
-                            appendLog(`Mapped: ${hash} @ ${event.lastRssi}dBm`);
+                        // Always log zero-hop messages received
+                        appendLog(`Rx 0-hop: ${hash} @ ${event.lastRssi}dBm`);
+
+                        if (selectedHash && hash === selectedHash) {
+                            if (currentPos) {
+                                packetCollection.push({
+                                    timestamp: new Date().toISOString(),
+                                    lat: currentPos[0],
+                                    lon: currentPos[1],
+                                    rssi: event.lastRssi,
+                                    hash,
+                                    type: 'signal'
+                                });
+                                L.circleMarker(currentPos, { color: 'cyan', radius: 4 }).addTo(map);
+                                const intensity = Math.max(0, (event.lastRssi + 100) / 70);
+                                heatPoints.push([...currentPos, intensity]);
+                                heatmap.setLatLngs(heatPoints);
+                            }
                         }
                     }
                 });
